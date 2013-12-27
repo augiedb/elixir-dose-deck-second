@@ -48,6 +48,20 @@ defmodule DeckTest do
     assert( length(d) == 46 )
     assert( length(h) == 6 )
   end
+end
 
+defmodule GameTest do
+  use ExUnit.Case
+
+  test "Game Over/Win if hand is empty" do
+    d = Deck.create()
+    assert( Game.take_turn([], d, d) == "Win")
+  end
+
+  test "Game Over/Lose if discards or deck empty out before the player hand" do
+    d = Deck.create()
+    assert( Game.take_turn(d, [], d) == "Lose")
+    assert( Game.take_turn(d, d, []) == "Lose")
+  end
 
 end

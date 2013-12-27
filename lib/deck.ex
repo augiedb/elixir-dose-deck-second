@@ -35,28 +35,20 @@ defmodule Deck do
     {new_card, deck} = deal_hand(deck, 1)
     {hand ++ new_card, deck}
   end
+end
 
-# Sketching out the next step -- thinking out loud, ignore this
-#def take_turn([], discard, draw) do
-#  IO.puts 'GAME OVER'
-#end
+defmodule Game do
 
+  def take_turn([], _discard, _draw) do
+    "Win" 
+  end
 
+  def take_turn(_hand, [], _draw) do
+    "Lose" 
+  end
 
-#  def deal_hand(deck, number_of_cards) do
-#    deal_hand(deck, number_of_cards, [])
-#  end
-
-#  def deal_hand([head|tail], number_of_cards, []) do
-#    deal_hand(tail, number_of_cards, head ) 
-#  end
-    
-#  def deal_hand([head|tail], number_of_cards, hand) do
-#    deal_hand(tail, number_of_cards, head ++ hand)
-#  end
-
-# def deal_hand(deck, _, hand) do
-#   {deck, hand}
-# end
+  def take_turn(_hand, _discard, []) do
+    "Lose" 
+  end
 
 end
