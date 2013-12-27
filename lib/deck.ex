@@ -39,6 +39,17 @@ end
 
 defmodule Game do
 
+  def play_a_game do
+
+    deck = Deck.create()
+    {hand, deck} = Deck.deal_hand(deck, 5)
+    {card, deck} = Deck.deal_hand(deck, 1)
+    results = take_turn(hand, card, deck)
+    IO.puts "The final results is a " + results
+
+  end
+
+
   def take_turn([], _discard, _draw) do
     "Win" 
   end
@@ -49,6 +60,18 @@ defmodule Game do
 
   def take_turn(_hand, _discard, []) do
     "Lose" 
+  end
+
+  def take_turn(hand, discard, draw) do
+
+    # Play a card in user's hand that matches the discard
+    # Is a rank or value matches or you have a Crazy Eight, play the card
+    # Function to be written
+
+    # Take the next turn
+    {discard, draw} = Deck.deal_hand(draw, 1)
+    take_turn(hand, discard, draw)   
+
   end
 
 end
