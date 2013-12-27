@@ -32,6 +32,22 @@ defmodule DeckTest do
     assert( Deck.count_rank(deck, 'Ace')  == 4)
   end
 
+  test "Deal a hand of 5 cards" do
+    deck = Deck.create()
+    assert( length(deck) == 52 )
+    {hand, deck} = Deck.deal_hand(deck, 5)
+    assert( length(deck) == 47 )
+    assert( length(hand) == 5 )
+  end
+
+  test "Pick Up Card from Deck" do
+    d = Deck.create()
+    {h, d} = Deck.deal_hand(d, 5)
+    assert( length(d) == 47 )
+    {h, d} = Deck.pick_up_card(d, h)
+    assert( length(d) == 46 )
+    assert( length(h) == 6 )
+  end
 
 
 end

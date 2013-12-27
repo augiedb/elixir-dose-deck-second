@@ -27,4 +27,36 @@ defmodule Deck do
     Enum.count(deck, fn(x) -> x.rank == rank end)
   end
 
+  def deal_hand(deck, number_of_cards_in_a_hand) do
+    Enum.split(deck, number_of_cards_in_a_hand)
+  end
+
+  def pick_up_card(deck, hand) do
+    {new_card, deck} = deal_hand(deck, 1)
+    {hand ++ new_card, deck}
+  end
+
+# Sketching out the next step -- thinking out loud, ignore this
+#def take_turn([], discard, draw) do
+#  IO.puts 'GAME OVER'
+#end
+
+
+
+#  def deal_hand(deck, number_of_cards) do
+#    deal_hand(deck, number_of_cards, [])
+#  end
+
+#  def deal_hand([head|tail], number_of_cards, []) do
+#    deal_hand(tail, number_of_cards, head ) 
+#  end
+    
+#  def deal_hand([head|tail], number_of_cards, hand) do
+#    deal_hand(tail, number_of_cards, head ++ hand)
+#  end
+
+# def deal_hand(deck, _, hand) do
+#   {deck, hand}
+# end
+
 end
