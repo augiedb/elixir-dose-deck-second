@@ -73,12 +73,24 @@ defmodule GameTest do
     assert( length(new_draw) == length(draw) - 1 )
   end
 
-#  test "Play a card successfully" do
-#    draw = Deck.create()
-#    {hand, draw} = Deck.deal_hand(draw, 5)
-#    {new_hand, new_draw} = Deck.pick_up_card(draw, hand)
-#    Game.play_card(card, new_hand, discard)
-# end
+  test "Play a card successfully" do
+    draw = Deck.create()
+    {hand, draw} = Deck.deal_hand(draw, 5)
+    assert(length(hand)    == 5         )
+    assert(length(draw)    == 52 - 5    )
+    {discard, draw} = Deck.deal_hand(draw, 1)
+    assert(length(draw)    == 52 - 5 - 1)
+    assert(length(discard) == 1         )
+    {hand, draw} = Deck.pick_up_card(draw, hand)
+    assert(length(hand)    == 6)
+    assert(length(draw)    == 52 - 5 - 1 - 1 )
+    card = Card.new rank: 'Jack', suit: 'Diamonds'
+    hand = hand ++ [card]
+    assert(length(hand) == 7)
+    {discard, hand} = Game.play_card(card, hand, discard)
+    assert(length(discard) == 2)
+    assert(length(hand)    == 6)
+ end
 
 #17   def play_card(card, hand, discard) do
  #16     hand_new = hand -- [card]
