@@ -50,6 +50,8 @@ defmodule DeckTest do
   end
 end
 
+
+
 defmodule GameTest do
   use ExUnit.Case
 
@@ -58,10 +60,61 @@ defmodule GameTest do
     assert( Game.take_turn([], d, d) == "Win")
   end
 
-  test "Game Over/Lose if discards or deck empty out before the player hand" do
+  test "Game Over/Lose if draw is empty before the player's hand" do
     d = Deck.create()
-    assert( Game.take_turn(d, [], d) == "Lose")
     assert( Game.take_turn(d, d, []) == "Lose")
   end
+
+  test "Pick up a card successfully" do
+    draw = Deck.create()
+    {hand, draw} = Deck.deal_hand(draw, 5)
+    {new_hand, new_draw} = Deck.pick_up_card(draw, hand)
+    assert( length(new_hand) == length(hand) + 1 )
+    assert( length(new_draw) == length(draw) - 1 )
+  end
+
+#  test "Play a card successfully" do
+#    draw = Deck.create()
+#    {hand, draw} = Deck.deal_hand(draw, 5)
+#    {new_hand, new_draw} = Deck.pick_up_card(draw, hand)
+#    Game.play_card(card, new_hand, discard)
+# end
+
+#17   def play_card(card, hand, discard) do
+ #16     hand_new = hand -- [card]
+ # 15     discard_new = discard ++ [card]
+ #  14     {discard_new, hand_new}
+ #   13   end
+
+
+
+  test "Find a correct match to a rank and suit" do
+    c_1 = Card.new rank: 'Jack', suit: 'Clubs'
+    c_2 = Card.new rank: 5,      suit: 'Hearts'
+    hand = [c_1, c_2]
+    c_rank = Card.new rank: 'Jack', suit: 'Diamonds'
+    assert( Game.is_a_match(hand, c_rank) == c_1 )
+    c_suit = Card.new rank: 'Ace', suit: 'Clubs'
+    assert( Game.is_a_match(hand, c_suit) == c_1 )
+    c_suit = Card.new rank: 'Ace', suit: 'Diamonds'
+    assert( Game.is_a_match(hand, c_suit) == 0 )
+  end
+
+
+
+#  test "Take a turn with one card" do
+#    draw = Deck.create()
+#    discard = Deck.deal_hand(draw, 1)
+#    {hand, draw} = Deck.deal_hand(draw, 5)
+#    draw = Deck.deal_hand(draw, 1)
+#    {new_hand, new_draw} = Deck.pick_up_card(draw, hand)
+#    Game.take_turn(new_hand, discard, new_draw)
+#  end
+
+#  test "Drawn card matches a card in the player's hand" do
+#    hand = Deck.create()
+#    card_to_match = Enum.first(hand)
+#    assert( Game.is_a_match(hand, card_to_match) == true )
+#  end
 
 end
