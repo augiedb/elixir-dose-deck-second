@@ -85,10 +85,12 @@ defmodule GameTest do
     assert(length(hand)    == 6)
     assert(length(draw)    == 52 - 5 - 1 - 1 )
     card = Card.new rank: 'Jack', suit: 'Diamonds'
-    hand = hand ++ [card]
+    hand = hand ++ [card] # Hacky, but want to test that a specific card can be played
     assert(length(hand) == 7)
     {discard, hand} = Game.play_card(card, hand, discard)
+    assert( Enum.member?(discard, card) )
     assert(length(discard) == 2)
+    assert( Enum.member?(hand, card) == false )
     assert(length(hand)    == 6)
  end
 
