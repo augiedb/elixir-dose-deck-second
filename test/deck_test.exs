@@ -73,6 +73,10 @@ defmodule GameTest do
     assert( length(new_draw) == length(draw) - 1 )
   end
 
+  # This is one ridiculously long test, checking way too much stuff along the way.
+  # Like most such testing, it's done to help ME feel comfortable with my own code
+  # and with Elixir's libraries and functionalities.  At some point down the road, 
+  # I'll likely delete a chunk of this.
   test "Play a card successfully" do
     draw = Deck.create()
     {hand, draw} = Deck.deal_hand(draw, 5)

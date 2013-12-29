@@ -62,28 +62,30 @@ defmodule Game do
   end
 
   def take_turn(_hand, _discard, []) do
-    "Lose" 
+    # TO DO: Problem: This will end the game if the user picks up the last card.
+    #        He or she won't have a chance to play the card if it IS a match.
+    #        Need to work on that logic.
+
     # TO DO: Include number of points held in losing hand
+    "Lose" 
   end
 
   def take_turn(hand, discard, draw) do
     # Play a card in user's hand that matches the discard
-    # Is a rank or value matches or you have a Crazy Eight, play the card
+    # If a rank or value matches or you have a Crazy Eight, play the card
 
-    # TO DO: Do I sense some pipes coming up here?
     {card_to_match, _discard_remainder} = Enum.split(discard, 1)
     card_to_play = is_a_match(hand, card_to_match)    
-    # if card_to_play == 0 there is no match and you must play another card
-    # TO DO: Program that shortcut 
-    {discard, hand} = play_card(card_to_play, hand, discard)
- 
-    # Take the next turn
-    {discard, draw} = Deck.deal_hand(draw, 1)
-    take_turn(hand, discard, draw)   
+    if card_to_play == 0 do
+      {card, new_draw} = Deck.deal_hand(draw, 1)
+      take_turn(hand ++ card, discard, new_draw)
+    else
+      {discard, hand} = play_card(card_to_play, hand, discard)
 
-    # If there is no match, recursively call this function while drawing a new card into your hand
-    {card, new_draw} = Deck.deal_hand(draw, 1)
-    take_turn(hand ++ card, discard, new_draw)
+      # Take the next turn
+      {discard, draw} = Deck.deal_hand(draw, 1)
+      take_turn(hand, discard, draw)   
+    end
 
   end
 
