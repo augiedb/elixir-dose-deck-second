@@ -53,6 +53,14 @@ defmodule Game do
     IO.puts "The final results is a " + results
   end
 
+  def top_discard_card(discards) when length(discards) > 1 do
+    { _ignore, top_card } = Enum.split(discards, -1)
+     top_card    
+  end
+
+  def top_discard_card(discards) do
+    discards
+  end
 
   def play_card(card, hand, discard) do
     hand_new = hand -- [card]
@@ -80,11 +88,11 @@ defmodule Game do
     # Play a card in user's hand that matches the discard
     # If a rank or value matches or you have a Crazy Eight, play the card
 
-    {card_to_match, _} = Enum.split(discard, 1)
+    card_to_match = top_discard_card(discard)
     card_to_play = Deck.is_a_match(hand, card_to_match)    
     if card_to_play == 0 do
       {card, new_draw} = Deck.deal_hand(draw, 1)
-      take_turn(hand ++ card, discard, new_draw)
+      take_turn(hand ++ [card], discard, new_draw)
     else
       {discard, hand} = play_card(card_to_play, hand, discard)
 

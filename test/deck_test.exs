@@ -73,6 +73,24 @@ defmodule GameTest do
     assert( length(new_draw) == length(draw) - 1 )
   end
 
+  test "Show correct top card on discard stack" do
+    deck = Deck.create()
+    {discard, deck} = Deck.deal_hand(deck, 1)
+    top_card = Game.top_discard_card(discard)
+    assert( top_card == discard ) # not empty set
+
+    {new_card, draw} = Deck.deal_hand(deck, 1)
+    new_discards = Game.top_discard_card(discard ++ new_card)
+    assert( new_discards == new_card)
+  end
+
+
+#  5   def top_discard_card(discards) do
+#    4     { _everything, top_card } = Enum.split(discards, 1)
+#      3     top_card
+#        2   end
+#
+
   # This is one ridiculously long test, checking way too much stuff along the way.
   # Like most such testing, it's done to help ME feel comfortable with my own code
   # and with Elixir's libraries and functionalities.  At some point down the road, 
