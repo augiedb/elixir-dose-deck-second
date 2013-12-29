@@ -35,27 +35,33 @@ defmodule Deck do
     {new_card, new_draw} = deal_hand(draw, 1)
     {hand ++ [new_card], new_draw}
   end
+  
+  def is_a_match(hand, card_to_match) do
+    Enum.find(hand, 0, fn(x) -> (card_to_match.suit == x.suit) or (card_to_match.rank == x.rank ) end) 
+  end
+
 end
 
 defmodule Game do
 
+  # This is where you start the game
   def play_a_game do
     deck = Deck.create()
     {hand, deck} = Deck.deal_hand(deck, 5)
-    {card, deck} = Deck.deal_hand(deck, 1)
-    results = take_turn(hand, card, deck)
+    {discard, deck} = Deck.deal_hand(deck, 1)
+    results = take_turn(hand, discard, deck)
     IO.puts "The final results is a " + results
   end
 
-  def is_a_match(hand, card_to_match) do
-    Enum.find(hand, 0, fn(x) -> (card_to_match.suit == x.suit) or (card_to_match.rank == x.rank ) end) 
-  end
 
   def play_card(card, hand, discard) do
     hand_new = hand -- [card]
     discard_new = discard ++ [card]
     {discard_new, hand_new}
   end
+
+
+#--------- TAKE_TURNS
 
   def take_turn([], _discard, _draw) do
     "Win" 
@@ -74,8 +80,8 @@ defmodule Game do
     # Play a card in user's hand that matches the discard
     # If a rank or value matches or you have a Crazy Eight, play the card
 
-    {card_to_match, _discard_remainder} = Enum.split(discard, 1)
-    card_to_play = is_a_match(hand, card_to_match)    
+    {card_to_match, _} = Enum.split(discard, 1)
+    card_to_play = Deck.is_a_match(hand, card_to_match)    
     if card_to_play == 0 do
       {card, new_draw} = Deck.deal_hand(draw, 1)
       take_turn(hand ++ card, discard, new_draw)
@@ -83,8 +89,8 @@ defmodule Game do
       {discard, hand} = play_card(card_to_play, hand, discard)
 
       # Take the next turn
-      {discard, draw} = Deck.deal_hand(draw, 1)
-      take_turn(hand, discard, draw)   
+      {discard_card, draw} = Deck.deal_hand(draw, 1)
+      take_turn(hand, discard ++ [discard_card], draw)   
     end
 
   end

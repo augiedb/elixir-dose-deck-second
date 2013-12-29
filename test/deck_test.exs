@@ -111,11 +111,11 @@ defmodule GameTest do
     c_2 = Card.new rank: 5,      suit: 'Hearts'
     hand = [c_1, c_2]
     c_rank = Card.new rank: 'Jack', suit: 'Diamonds'
-    assert( Game.is_a_match(hand, c_rank) == c_1 )
+    assert( Deck.is_a_match(hand, c_rank) == c_1 )
     c_suit = Card.new rank: 'Ace', suit: 'Clubs'
-    assert( Game.is_a_match(hand, c_suit) == c_1 )
+    assert( Deck.is_a_match(hand, c_suit) == c_1 )
     c_suit = Card.new rank: 'Ace', suit: 'Diamonds'
-    assert( Game.is_a_match(hand, c_suit) == 0 )
+    assert( Deck.is_a_match(hand, c_suit) == 0 )
   end
 
 
@@ -132,7 +132,7 @@ defmodule GameTest do
 #  test "Drawn card matches a card in the player's hand" do
 #    hand = Deck.create()
 #    card_to_match = Enum.first(hand)
-#    assert( Game.is_a_match(hand, card_to_match) == true )
+#    assert( Deck.is_a_match(hand, card_to_match) == true )
 #  end
 
 end
