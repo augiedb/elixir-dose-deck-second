@@ -40,6 +40,11 @@ defmodule Deck do
     Enum.find(hand, 0, fn(x) -> (card_to_match.suit == x.suit) or (card_to_match.rank == x.rank ) end) 
   end
 
+  def describe_card(card) do
+    "Card is #{card.rank} of #{card.suit}"
+  end
+
+
 end
 
 defmodule Game do
@@ -55,7 +60,7 @@ defmodule Game do
 
   def top_discard_card(discards) when length(discards) > 1 do
     { _ignore, top_card } = Enum.split(discards, -1)
-     top_card    
+    top_card    
   end
 
   def top_discard_card(discards) do
@@ -68,6 +73,7 @@ defmodule Game do
     {discard_new, hand_new}
   end
 
+  
 
 #--------- TAKE_TURNS
 
@@ -92,6 +98,8 @@ defmodule Game do
 
 IO.puts length(hand)
 IO.puts length(card_to_match)
+Deck.describe_card(card_to_match)
+
     card_to_play = Deck.is_a_match(hand, Enum.first(card_to_match))
     if card_to_play == 0 do
       {card, new_draw} = Deck.deal_hand(draw, 1)

@@ -40,6 +40,19 @@ defmodule DeckTest do
     assert( length(hand) == 5 )
   end
 
+  test "Describe a card in English" do
+    c_1 = Card.new rank: 'Jack', suit: 'Clubs'
+    c_2 = Card.new rank: 5,      suit: 'Hearts'
+    assert(Deck.describe_card(c_1) == "Card is Jack of Clubs")
+    assert(Deck.describe_card(c_2) == "Card is 5 of Hearts")
+
+  end
+
+# 21   def describe_card(card) do
+#  20     IO.puts "Card is #{card.rank} of #{card.suit}"
+#   19   end
+
+
 #  test "Pick Up Card from Deck" do
 #    d = Deck.create()
 #    {h, d} = Deck.deal_hand(d, 5)
