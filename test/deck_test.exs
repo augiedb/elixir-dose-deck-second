@@ -40,16 +40,24 @@ defmodule DeckTest do
     assert( length(hand) == 5 )
   end
 
-  test "Pick Up Card from Deck" do
-    d = Deck.create()
-    {h, d} = Deck.deal_hand(d, 5)
-    assert( length(d) == 47 )
-    {h, d} = Deck.pick_up_card(d, h)
-    assert( length(d) == 46 )
-    assert( length(h) == 6 )
-  end
-end
+#  test "Pick Up Card from Deck" do
+#    d = Deck.create()
+#    {h, d} = Deck.deal_hand(d, 5)
+#    assert( length(d) == 47 )
+#    {h, d} = Deck.pick_up_card(d, h)
+#    assert( length(d) == 46 )
+#    assert( length(h) == 6 )
+#  end
 
+  test "Pick up a card from the draw successfully" do
+    draw = Deck.create()
+    {hand, draw} = Deck.deal_hand(draw, 5)
+    {new_hand, new_draw} = Deck.pick_up_card(draw, hand)
+    assert( length(new_hand) == length(hand) + 1 )
+    assert( length(new_draw) == length(draw) - 1 )
+  end
+
+end
 
 
 defmodule GameTest do
@@ -65,14 +73,6 @@ defmodule GameTest do
     assert( Game.take_turn(d, d, []) == "Lose")
   end
 
-  test "Pick up a card successfully" do
-    draw = Deck.create()
-    {hand, draw} = Deck.deal_hand(draw, 5)
-    {new_hand, new_draw} = Deck.pick_up_card(draw, hand)
-    assert( length(new_hand) == length(hand) + 1 )
-    assert( length(new_draw) == length(draw) - 1 )
-  end
-
   test "Show correct top card on discard stack" do
     deck = Deck.create()
     {discard, deck} = Deck.deal_hand(deck, 1)
@@ -83,13 +83,6 @@ defmodule GameTest do
     new_discards = Game.top_discard_card(discard ++ new_card)
     assert( new_discards == new_card)
   end
-
-
-#  5   def top_discard_card(discards) do
-#    4     { _everything, top_card } = Enum.split(discards, 1)
-#      3     top_card
-#        2   end
-#
 
   # This is one ridiculously long test, checking way too much stuff along the way.
   # Like most such testing, it's done to help ME feel comfortable with my own code
@@ -114,15 +107,7 @@ defmodule GameTest do
     assert(length(discard) == 2)
     assert(Enum.member?(hand, card) == :false )
     assert(length(hand)    == 6)
- end
-
-#17   def play_card(card, hand, discard) do
- #16     hand_new = hand -- [card]
- # 15     discard_new = discard ++ [card]
- #  14     {discard_new, hand_new}
- #   13   end
-
-
+  end
 
   test "Find a correct match to a rank and suit" do
     c_1 = Card.new rank: 'Jack', suit: 'Clubs'
@@ -136,8 +121,6 @@ defmodule GameTest do
     assert( Deck.is_a_match(hand, c_suit) == 0 )
   end
 
-
-
 #  test "Take a turn with one card" do
 #    draw = Deck.create()
 #    discard = Deck.deal_hand(draw, 1)
@@ -147,10 +130,5 @@ defmodule GameTest do
 #    Game.take_turn(new_hand, discard, new_draw)
 #  end
 
-#  test "Drawn card matches a card in the player's hand" do
-#    hand = Deck.create()
-#    card_to_match = Enum.first(hand)
-#    assert( Deck.is_a_match(hand, card_to_match) == true )
-#  end
 
 end

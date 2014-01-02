@@ -89,7 +89,10 @@ defmodule Game do
     # If a rank or value matches or you have a Crazy Eight, play the card
 
     card_to_match = top_discard_card(discard)
-    card_to_play = Deck.is_a_match(hand, card_to_match)    
+
+IO.puts length(hand)
+IO.puts length(card_to_match)
+    card_to_play = Deck.is_a_match(hand, Enum.first(card_to_match))
     if card_to_play == 0 do
       {card, new_draw} = Deck.deal_hand(draw, 1)
       take_turn(hand ++ [card], discard, new_draw)
