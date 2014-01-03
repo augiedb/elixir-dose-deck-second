@@ -73,13 +73,13 @@ defmodule GameTest do
 
   test "Show correct top card on discard stack" do
     deck = Deck.create()
-    {discard, deck} = Deck.deal_hand(deck, 1)
+    {discard, deck} = Deck.deal_card(deck)
     top_card = Game.top_discard_card(discard)
     assert( top_card == discard ) # not empty set
 
-    {new_card, _draw} = Deck.deal_hand(deck, 1)
-    new_discards = Game.top_discard_card(discard ++ new_card)
-    assert( new_discards == new_card)
+    {new_card, _draw} = Deck.deal_card(deck)
+    new_discards = Game.top_discard_card(discard ++ [new_card])
+    assert( new_discards == new_card )
   end
 
   # This is one ridiculously long test, checking way too much stuff along the way.

@@ -41,6 +41,12 @@ defmodule Deck do
     Enum.split(deck, number_of_cards_in_a_hand)
   end
 
+  def deal_card(deck) do
+    {card_list_of_one, rest_of_deck} = Enum.split(deck, 1) 
+    single_card = List.flatten(card_list_of_one)
+    {single_card, rest_of_deck}
+  end
+
   def pick_up_card(draw, hand) do
     {new_card, new_draw} = deal_hand(draw, 1)
     {hand ++ [new_card], new_draw}
@@ -58,8 +64,8 @@ defmodule Deck do
   end
 
   def describe_card(card) when is_list(card) do
-    x = List.flatten(card) |> Enum.first 
-    x.describe
+    first_card = List.flatten(card) |> Enum.first 
+    first_card.describe
   end
 
   def describe_card(card) do
@@ -102,6 +108,7 @@ defmodule Game do
 
   def show_hand([head|tail]) do
     IO.puts "#{Deck.describe_card(head)}"
+    #IO.puts "#{head.describe}"
     show_hand(tail)
   end
   
