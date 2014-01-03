@@ -1,4 +1,10 @@
-defrecord Card, suit: nil, rank: nil, points: nil
+defrecord Card, suit: nil, rank: nil, points: nil do
+
+  def describe(record) do
+    "#{record.rank} of #{record.suit}"
+  end
+
+end
 
 defmodule Deck do
   use Application.Behaviour
@@ -13,6 +19,10 @@ defmodule Deck do
     lc rank inlist ['Ace',2,3,4,5,6,7,8,9,10,'Jack','Queen','King'], 
         suit inlist ['Hearts','Clubs','Diamonds','Spades'], 
     do: Card.new rank: rank, suit: suit, points: init_points(rank)
+  end
+
+  def shuffle(deck) do
+    deck |> Enum.shuffle
   end
 
   def init_points(points) when points > 1 and points < 11, do: points
@@ -36,14 +46,25 @@ defmodule Deck do
     {hand ++ [new_card], new_draw}
   end
   
+  def is_a_match(hand, card_to_match) when is_list(card_to_match) do
+    card_to_match = List.flatten(card_to_match) |> Enum.first
+    card_compare = fn(x) -> (card_to_match.suit == x.suit) or (card_to_match.rank === x.rank ) end
+    Enum.find(List.flatten(hand), Card.new, card_compare)
+  end
+
   def is_a_match(hand, card_to_match) do
-    Enum.find(hand, 0, fn(x) -> (card_to_match.suit == x.suit) or (card_to_match.rank == x.rank ) end) 
+    card_compare = fn(x) -> (card_to_match.suit == x.suit) or (card_to_match.rank === x.rank ) end
+    Enum.find(List.flatten(hand), Card.new, card_compare)
+  end
+
+  def describe_card(card) when is_list(card) do
+    x = List.flatten(card) |> Enum.first 
+    x.describe
   end
 
   def describe_card(card) do
-    "Card is #{card.rank} of #{card.suit}"
+    card.describe
   end
-
 
 end
 
@@ -51,16 +72,16 @@ defmodule Game do
 
   # This is where you start the game
   def play_a_game do
-    deck = Deck.create()
+    deck = Deck.create() |> Deck.shuffle
     {hand, deck} = Deck.deal_hand(deck, 5)
     {discard, deck} = Deck.deal_hand(deck, 1)
     results = take_turn(hand, discard, deck)
-    IO.puts "The final results is a " + results
+    IO.puts "You #{results}"
   end
 
   def top_discard_card(discards) when length(discards) > 1 do
     { _ignore, top_card } = Enum.split(discards, -1)
-    top_card    
+    Enum.first top_card    
   end
 
   def top_discard_card(discards) do
@@ -68,11 +89,21 @@ defmodule Game do
   end
 
   def play_card(card, hand, discard) do
+    hand = List.flatten hand
+    Game.show_hand(hand)
     hand_new = hand -- [card]
     discard_new = discard ++ [card]
     {discard_new, hand_new}
   end
 
+  def show_hand([]) do
+    #Nothing
+  end
+
+  def show_hand([head|tail]) do
+    IO.puts "#{Deck.describe_card(head)}"
+    show_hand(tail)
+  end
   
 
 #--------- TAKE_TURNS
@@ -90,26 +121,33 @@ defmodule Game do
     "Lose" 
   end
 
+
   def take_turn(hand, discard, draw) do
     # Play a card in user's hand that matches the discard
     # If a rank or value matches or you have a Crazy Eight, play the card
 
-    card_to_match = top_discard_card(discard)
+    card_to_match = Game.top_discard_card(discard)
+    IO.puts "CARD TO MATCH: #{Deck.describe_card(card_to_match)}"
+    IO.puts "NUMBER OF CARDS IN THE DISCARD PILE: #{length(discard)}"
+    IO.puts "NUMBER OF CARDS IN THE DRAW    PILE: #{length(draw)}"
+    IO.puts "You have #{length(hand)} cards in your hand."
+    show_hand(hand)
 
-IO.puts length(hand)
-IO.puts length(card_to_match)
-Deck.describe_card(card_to_match)
+    card_to_play = Deck.is_a_match(hand, card_to_match)
 
-    card_to_play = Deck.is_a_match(hand, Enum.first(card_to_match))
-    if card_to_play == 0 do
+    if card_to_play.suit == nil do  # NO MATCH
+      IO.puts Deck.describe_card(card_to_match)
+      IO.puts "Matches NOTHING"
       {card, new_draw} = Deck.deal_hand(draw, 1)
+      IO.puts "Took 1 from draw, added 1 to hand"
       take_turn(hand ++ [card], discard, new_draw)
     else
-      {discard, hand} = play_card(card_to_play, hand, discard)
+      IO.puts Deck.describe_card(card_to_match)
+      IO.puts "Matches"
+      IO.puts Deck.describe_card(card_to_play)
+      {new_discard, new_hand} = play_card(card_to_play, hand, discard)
 
-      # Take the next turn
-      {discard_card, draw} = Deck.deal_hand(draw, 1)
-      take_turn(hand, discard ++ [discard_card], draw)   
+      take_turn(new_hand, new_discard, draw)   
     end
 
   end

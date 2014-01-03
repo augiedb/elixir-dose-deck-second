@@ -43,24 +43,9 @@ defmodule DeckTest do
   test "Describe a card in English" do
     c_1 = Card.new rank: 'Jack', suit: 'Clubs'
     c_2 = Card.new rank: 5,      suit: 'Hearts'
-    assert(Deck.describe_card(c_1) == "Card is Jack of Clubs")
-    assert(Deck.describe_card(c_2) == "Card is 5 of Hearts")
-
+    assert(Deck.describe_card(c_1) == "Jack of Clubs")
+    assert(Deck.describe_card(c_2) == "5 of Hearts")
   end
-
-# 21   def describe_card(card) do
-#  20     IO.puts "Card is #{card.rank} of #{card.suit}"
-#   19   end
-
-
-#  test "Pick Up Card from Deck" do
-#    d = Deck.create()
-#    {h, d} = Deck.deal_hand(d, 5)
-#    assert( length(d) == 47 )
-#    {h, d} = Deck.pick_up_card(d, h)
-#    assert( length(d) == 46 )
-#    assert( length(h) == 6 )
-#  end
 
   test "Pick up a card from the draw successfully" do
     draw = Deck.create()
@@ -92,7 +77,7 @@ defmodule GameTest do
     top_card = Game.top_discard_card(discard)
     assert( top_card == discard ) # not empty set
 
-    {new_card, draw} = Deck.deal_hand(deck, 1)
+    {new_card, _draw} = Deck.deal_hand(deck, 1)
     new_discards = Game.top_discard_card(discard ++ new_card)
     assert( new_discards == new_card)
   end
@@ -131,7 +116,7 @@ defmodule GameTest do
     c_suit = Card.new rank: 'Ace', suit: 'Clubs'
     assert( Deck.is_a_match(hand, c_suit) == c_1 )
     c_suit = Card.new rank: 'Ace', suit: 'Diamonds'
-    assert( Deck.is_a_match(hand, c_suit) == 0 )
+    assert( Deck.is_a_match(hand, c_suit) == Card.new )
   end
 
 #  test "Take a turn with one card" do
