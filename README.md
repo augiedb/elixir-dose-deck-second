@@ -13,3 +13,7 @@ Program now runs. There's an off by one error near the end I need to fix.  And I
 ## TODO: 
 
 Add all the functionality needed to create a card game. Game play mechanics, card comparisons, dealing out cards, etc.
+
+## TO RUN:
+
+I've been running it from inside `iex`.  Go with `Games.play_a_game` and let 'er rip.  It's ugly, but it works.
