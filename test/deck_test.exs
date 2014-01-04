@@ -40,11 +40,12 @@ defmodule DeckTest do
     assert( length(hand) == 5 )
   end
 
+
   test "Describe a card in English" do
-    c_1 = Card.new rank: 'Jack', suit: 'Clubs'
-    c_2 = Card.new rank: 5,      suit: 'Hearts'
-    assert(Deck.describe_card(c_1) == "Jack of Clubs")
-    assert(Deck.describe_card(c_2) == "5 of Hearts")
+    c_1 = Card.new rank: 'Jack', suit: 'Clubs',  points: 10
+    c_2 = Card.new rank: 5,      suit: 'Hearts', points: 5
+    assert(Deck.describe_card(c_1) == "Jack of Clubs (10)")
+    assert(Deck.describe_card(c_2) == "5 of Hearts (5)")
   end
 
   test "Pick up a card from the draw successfully" do
@@ -80,6 +81,14 @@ defmodule GameTest do
     {new_card, _draw} = Deck.deal_card(deck)
     new_discards = Game.top_discard_card(discard ++ [new_card])
     assert( new_discards == new_card )
+  end
+
+  test "Find a hand's points total" do
+    c_1 = Card.new rank: 'Jack', suit: 'Clubs', points: 10
+    c_2 = Card.new rank: 5,      suit: 'Hearts', points: 5
+    
+    hand = [c_1, c_2]
+    assert( Game.hand_value(hand) == 15 )
   end
 
   # This is one ridiculously long test, checking way too much stuff along the way.
