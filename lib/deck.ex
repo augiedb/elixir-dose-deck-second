@@ -43,7 +43,7 @@ defmodule Deck do
 
   def deal_card(deck) do
     {card_list_of_one, rest_of_deck} = Enum.split(deck, 1) 
-    single_card = List.flatten(card_list_of_one)
+    single_card = List.flatten(card_list_of_one) |> Enum.first
     {single_card, rest_of_deck}
   end
 
@@ -63,10 +63,10 @@ defmodule Deck do
     Enum.find(List.flatten(hand), Card.new, card_compare)
   end
 
-  def describe_card(card) when is_list(card) do
-    first_card = card |> Enum.first 
-    first_card.describe
-  end
+#  def describe_card(card) when is_list(card) do
+#    first_card = card |> Enum.first 
+#    first_card.describe
+#  end
 
   def describe_card(card) do
     card.describe
@@ -91,30 +91,33 @@ defmodule Game do
   end
 
   def top_discard_card(discards) do
-    discards
+     discards
   end
 
   def play_card(card, hand, discard) do
     hand = List.flatten hand
     Game.show_hand(hand)
     hand_new = hand -- [card]
-    discard_new = discard ++ [card]
+    discard_new = [discard] ++ [card]
     {discard_new, hand_new}
   end
 
-  def show_hand([]) do
+  def show_hand(list) do
+    show_hand(list, 1)
+  end
+  
+  defp show_hand([], _) do
     #Nothing
   end
 
-  def show_hand([head|tail]) do
-    IO.puts "#{Deck.describe_card(head)}"
-    #IO.puts "#{head.describe}"
-    show_hand(tail)
+  defp show_hand([head|tail], acc) do
+    IO.puts "#{acc}: #{Deck.describe_card(head)}"
+    show_hand(tail, acc + 1)
   end
-  
+
   def hand_value(hand) do
   IO.puts "------------------"
-  show_hand(hand)
+  Game.show_hand(hand)
     points_list = Enum.map(hand, fn(x) -> x.points end)
     Enum.reduce(points_list, 0, fn(x, acc) -> x + acc end)
 
@@ -162,17 +165,18 @@ defmodule Game do
   def take_turn(hand, discard, draw) do
     # Play a card in user's hand that matches the discard
     # If a rank or value matches or you have a Crazy Eight, play the card
-
     card_to_match = Game.top_discard_card(discard)
     IO.puts "CARD TO MATCH: #{Deck.describe_card(card_to_match)}"
-    IO.puts "NUMBER OF CARDS IN THE DISCARD PILE: #{length(discard)}"
+    # Have to wrap discard up in brackets to treat it as a list.  MAGIC!
+    IO.puts "NUMBER OF CARDS IN THE DISCARD PILE: #{length([discard])}"
     IO.puts "NUMBER OF CARDS IN THE DRAW    PILE: #{length(draw)}"
     IO.puts "You have #{length(hand)} cards in your hand."
-    show_hand(hand)
+    Game.show_hand(hand)
 
     card_to_play = Deck.is_a_match(hand, card_to_match)
 
     if card_to_play.suit == nil do  # NO MATCH
+      IO.puts "#-------------#"
       IO.puts Deck.describe_card(card_to_match)
       IO.puts "Matches NOTHING"
       {card, new_draw} = Deck.deal_card(draw)
