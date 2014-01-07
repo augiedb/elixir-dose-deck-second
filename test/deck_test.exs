@@ -79,7 +79,7 @@ defmodule GameTest do
     assert( top_card == discard ) # not empty set
 
     {new_card, _draw} = Deck.deal_card(deck)
-    new_discards = Game.top_discard_card(discard ++ [new_card])
+    new_discards = Game.top_discard_card([discard] ++ [new_card])
     assert( new_discards == new_card )
   end
 

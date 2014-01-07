@@ -86,11 +86,13 @@ defmodule Game do
   end
 
   def top_discard_card(discards) when length(discards) > 1 do
+    IO.puts "greater than one"
     { _ignore, top_card } = Enum.split(discards, -1)
     Enum.first top_card    
   end
 
   def top_discard_card(discards) do
+    IO.puts "not greater than one"
      discards
   end
 
