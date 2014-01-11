@@ -1,30 +1,34 @@
 defmodule Game do
 
+  # Rules to follow:
+  #
+  # DISCARD stack always puts cards at the beginning of the list
+
   # This is where you start the game
   def play_a_game do
     deck = Deck.create() |> Deck.shuffle
     {hand, deck} = Deck.deal_hand(deck, 5)
     {discard, deck} = Deck.deal_card(deck)
-    results = take_turn(hand, discard, deck)
+    results = take_turn(hand, [discard], deck)
     IO.puts "You #{results}"
   end
 
-  def top_discard_card(discards) when length(discards) > 1 do
-    IO.puts "greater than one"
-    { _ignore, top_card } = Enum.split(discards, -1)
-    Enum.first top_card    
-  end
+#  def top_discard_card(discards) when length(discards) > 1 do
+#    IO.puts "greater than one"
+#    [ top_card | _rest_of_discards ] = discards
+#    top_card
+#  end
 
   def top_discard_card(discards) do
-    IO.puts "not greater than one"
-     discards
+    [top_card | _rest] = discards
+    top_card 
   end
 
   def play_card(card, hand, discard) do
     hand = List.flatten hand
     Game.show_hand(hand)
     hand_new = hand -- [card]
-    discard_new = [discard] ++ [card]
+    discard_new = [card] ++ [discard] 
     {discard_new, hand_new}
   end
 
@@ -38,16 +42,14 @@ defmodule Game do
 
   defp show_hand([head|tail], acc) do
     IO.puts "#{acc}: #{Deck.describe_card(head)}"
-    show_hand(tail, acc + 1)
+    #ADB2show_hand(tail, acc + 1)
   end
 
   def hand_value(hand) do
   IO.puts "------------------"
-  Game.show_hand(hand)
+    #ADB Game.show_hand(hand)
     points_list = Enum.map(hand, fn(x) -> x.points end)
     Enum.reduce(points_list, 0, fn(x, acc) -> x + acc end)
-
-#    Enum.reduce(hand, 0, fn(x, acc) -> acc + x.points end)
   end
 
 #--------- TAKE_TURNS
@@ -97,7 +99,7 @@ defmodule Game do
     IO.puts "NUMBER OF CARDS IN THE DISCARD PILE: #{length([discard])}"
     IO.puts "NUMBER OF CARDS IN THE DRAW    PILE: #{length(draw)}"
     IO.puts "You have #{length(hand)} cards in your hand."
-    Game.show_hand(hand)
+    #Game.show_hand(hand)
 
     card_to_play = Deck.is_a_match(hand, card_to_match)
 

@@ -40,7 +40,8 @@ defmodule Deck do
   end
 
   def pick_up_card(draw, hand) do
-    {new_card, new_draw} = deal_hand(draw, 1)
+    [new_card | new_draw ] = draw
+    #{new_card, new_draw} = deal_hand(draw, 1)
     {hand ++ [new_card], new_draw}
   end
   
