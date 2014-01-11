@@ -89,7 +89,6 @@ defmodule Game do
   end
 
   def play_card(card, hand, discard) do
-    hand = List.flatten hand
     Game.show_hand(hand)
     hand_new = hand -- [card]
     discard_new = [card] ++ [discard] 
