@@ -59,11 +59,11 @@ defmodule Game do
     card_to_match = Game.see_top_discard_card(discard)
     card_to_play = Deck.is_a_match(hand, card_to_match)
     if card_to_play.suit != nil do  # MATCH
-      IO.puts "#{Deck.describe_card(card_to_match)} MATCHES #{Deck.describe_card(card_to_play)}"
+      #IO.puts "#{Deck.describe_card(card_to_match)} MATCHES #{Deck.describe_card(card_to_play)}"
       {new_discard, new_hand } = play_card(card_to_play, hand, discard)
       take_turn(new_hand, new_discard, [])
     else
-      IO.puts "Length of hand list: #{length(hand)}"
+      #IO.puts "Length of hand list: #{length(hand)}"
     
       # TO DO: Include number of points held in losing hand
       "Lose"
