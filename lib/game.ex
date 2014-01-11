@@ -36,7 +36,7 @@ defmodule Game do
   end
 
   defp show_hand([head|tail], acc, long_string) do
-    longer_string = long_string <> "#{acc}: #{Deck.describe_card(head)}\n"
+    longer_string = long_string <> "#{acc}: " <> head.describe <> "\n"
     show_hand(tail, acc + 1, longer_string)
   end
 ####
@@ -59,7 +59,7 @@ defmodule Game do
     card_to_match = Game.see_top_discard_card(discard)
     card_to_play = Deck.is_a_match(hand, card_to_match)
     if card_to_play.suit != nil do  # MATCH
-      #IO.puts "#{Deck.describe_card(card_to_match)} MATCHES #{Deck.describe_card(card_to_play)}"
+      IO.puts card_to_match.describe <> " MATCHES " <>  card_to_play.describe
       {new_discard, new_hand } = play_card(card_to_play, hand, discard)
       take_turn(new_hand, new_discard, [])
     else
@@ -81,12 +81,11 @@ defmodule Game do
     "Win" 
   end
 
-
   def take_turn(hand, discard, draw) do
     # Play a card in user's hand that matches the discard
     # If a rank or value matches or you have a Crazy Eight, play the card
     card_to_match = Game.see_top_discard_card(discard)
-    IO.puts "CARD TO MATCH: #{Deck.describe_card(card_to_match)}"
+    IO.puts "CARD TO MATCH: " <> card_to_match.describe
     # Have to wrap discard up in brackets to treat it as a list.  MAGIC!
     IO.puts "NUMBER OF CARDS IN THE DISCARD PILE: #{length([discard])}"
     IO.puts "NUMBER OF CARDS IN THE DRAW    PILE: #{length(draw)}"
@@ -97,15 +96,15 @@ defmodule Game do
 
     if card_to_play.suit == nil do  # NO MATCH
       IO.puts "#-------------#"
-      IO.puts Deck.describe_card(card_to_match)
+      IO.puts card_to_match.describe
       IO.puts "Matches NOTHING"
       {card, new_draw} = Deck.deal_card(draw)
       IO.puts "Took 1 from draw, added 1 to hand"
       take_turn(hand ++ [card], discard, new_draw)
     else
-      IO.puts Deck.describe_card(card_to_match)
+      IO.puts card_to_match.describe
       IO.puts "Matches"
-      IO.puts Deck.describe_card(card_to_play)
+      IO.puts card_to_play.describe
       {new_discard, new_hand} = play_card(card_to_play, hand, discard)
 
       take_turn(new_hand, new_discard, draw)   

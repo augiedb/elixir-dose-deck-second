@@ -26,8 +26,8 @@ defmodule DeckTest do
   test "Describe a card in English" do
     c_1 = Card.new rank: 'Jack', suit: 'Clubs',  points: 10
     c_2 = Card.new rank: 5,      suit: 'Hearts', points: 5
-    assert(Deck.describe_card(c_1) == "Jack of Clubs (10)")
-    assert(Deck.describe_card(c_2) == "5 of Hearts (5)")
+    assert(c_1.describe == "Jack of Clubs (10)")
+    assert(c_2.describe == "5 of Hearts (5)")
   end
 
   test "Pick up a card from the draw successfully" do
