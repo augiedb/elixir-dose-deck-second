@@ -13,7 +13,7 @@ defmodule Game do
     IO.puts "You #{results}"
   end
 
-  def top_discard_card(discards) do
+  def see_top_discard_card(discards) do
     [top_card | _rest] = discards
     top_card 
   end
@@ -42,15 +42,11 @@ defmodule Game do
 ####
 
   def hand_value(hand) do
-  IO.puts "------------------"
-    #ADB Game.show_hand(hand)
     points_list = Enum.map(hand, fn(x) -> x.points end)
     Enum.reduce(points_list, 0, fn(x, acc) -> x + acc end)
   end
 
 #--------- TAKE_TURNS
-
-
 
   def take_turn(hand, discard, []) do
     # TO DO: Problem: This will end the game if the user picks up the last card.
@@ -60,7 +56,7 @@ defmodule Game do
     # The draw is empty, but the user likely just picked up the last 
     # card and should be allowed to play it, if possible.
     # If it doesn't match, no harm. Just skip over this and end the game.
-    card_to_match = Game.top_discard_card(discard)
+    card_to_match = Game.see_top_discard_card(discard)
     card_to_play = Deck.is_a_match(hand, card_to_match)
     if card_to_play.suit != nil do  # MATCH
       IO.puts "#{Deck.describe_card(card_to_match)} MATCHES #{Deck.describe_card(card_to_play)}"
@@ -89,7 +85,7 @@ defmodule Game do
   def take_turn(hand, discard, draw) do
     # Play a card in user's hand that matches the discard
     # If a rank or value matches or you have a Crazy Eight, play the card
-    card_to_match = Game.top_discard_card(discard)
+    card_to_match = Game.see_top_discard_card(discard)
     IO.puts "CARD TO MATCH: #{Deck.describe_card(card_to_match)}"
     # Have to wrap discard up in brackets to treat it as a list.  MAGIC!
     IO.puts "NUMBER OF CARDS IN THE DISCARD PILE: #{length([discard])}"
