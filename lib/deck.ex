@@ -39,12 +39,6 @@ defmodule Deck do
     {hand ++ [new_card], new_draw}
   end
   
-  def is_a_match(hand, card_to_match) when is_list(card_to_match) do
-    card_to_match = card_to_match |> Enum.first
-    card_compare = fn(x) -> (card_to_match.suit == x.suit) or (card_to_match.rank === x.rank ) end
-    Enum.find(List.flatten(hand), Card.new, card_compare)
-  end
-
   def is_a_match(hand, card_to_match) do
     card_compare = fn(x) -> (card_to_match.suit == x.suit) or (card_to_match.rank === x.rank ) end
     Enum.find(List.flatten(hand), Card.new, card_compare)
