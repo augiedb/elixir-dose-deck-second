@@ -29,13 +29,6 @@ defmodule Deck do
   def init_points(points) when points == 'Ace', do: 1
   def init_points(_), do: 10 
 
-  def count_suit(deck, suit_name) do
-    Enum.count(deck, fn(x) -> x.suit == suit_name end)
-  end
-
-  def count_rank(deck, rank) do
-    Enum.count(deck, fn(x) -> x.rank == rank end)
-  end
 
   def deal_hand(deck, number_of_cards_in_a_hand) do
     Enum.split(deck, number_of_cards_in_a_hand)

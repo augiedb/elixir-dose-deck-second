@@ -24,24 +24,6 @@ defmodule DeckTest do
     assert( Deck.init_points('King')  == 10)
   end
 
-  test "13 Heart Cards in a deck", meta do
-    deck = meta[:deck]
-    assert( Deck.count_suit(deck, 'Hearts') == 13 )
-    assert( Deck.count_suit(deck, 'Clubs') == 13 )
-    assert( Deck.count_suit(deck, 'Diamonds') == 13 )
-    assert( Deck.count_suit(deck, 'Spades') == 13 )
-  end
-
-  test "4 of each number in a deck", meta do
-   # deck = Deck.create()
-    deck = meta[:deck]
-    assert( Deck.count_rank(deck, 9)      == 4)
-    assert( Deck.count_rank(deck, 5)      == 4)
-    assert( Deck.count_rank(deck, 'Jack') == 4)
-    assert( Deck.count_rank(deck, 'King') == 4)
-    assert( Deck.count_rank(deck, 'Ace')  == 4)
-  end
-
   test "Deal a hand of 5 cards" do
     deck = Deck.create()
     assert( length(deck) == 52 )
