@@ -13,12 +13,6 @@ defmodule Game do
     IO.puts "You #{results}"
   end
 
-#  def top_discard_card(discards) when length(discards) > 1 do
-#    IO.puts "greater than one"
-#    [ top_card | _rest_of_discards ] = discards
-#    top_card
-#  end
-
   def top_discard_card(discards) do
     [top_card | _rest] = discards
     top_card 
@@ -32,18 +26,20 @@ defmodule Game do
     {discard_new, hand_new}
   end
 
+###
   def show_hand(list) do
-    show_hand(list, 1)
+    show_hand(list, 1, "")
   end
   
-  defp show_hand([], _) do
-    #Nothing
+  defp show_hand([], _, long_string) do
+    long_string
   end
 
-  defp show_hand([head|tail], acc) do
-    IO.puts "#{acc}: #{Deck.describe_card(head)}"
-    #ADB2show_hand(tail, acc + 1)
+  defp show_hand([head|tail], acc, long_string) do
+    longer_string = long_string <> "#{acc}: #{Deck.describe_card(head)}\n"
+    show_hand(tail, acc + 1, longer_string)
   end
+####
 
   def hand_value(hand) do
   IO.puts "------------------"
