@@ -42,9 +42,7 @@ defmodule Deck do
   end
 
   def deal_card(deck) do
-    {card_list_of_one, rest_of_deck} = Enum.split(deck, 1) 
-    ##single_card = List.flatten(card_list_of_one) |> Enum.first
-    single_card = Enum.first(card_list_of_one)
+    [single_card|rest_of_deck] = deck
     {single_card, rest_of_deck}
   end
 
