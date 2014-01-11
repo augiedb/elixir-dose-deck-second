@@ -1,11 +1,6 @@
 defmodule DeckTest do
   use ExUnit.Case
 
-
-  setup do
-    {:ok, deck: Deck.create() }
-  end
-
   test "52 cards in a deck" do
     assert ( length(Deck.create()) == 52 )
   end
