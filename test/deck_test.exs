@@ -6,10 +6,6 @@ defmodule DeckTest do
     {:ok, deck: Deck.create() }
   end
 
-  test "the truth", meta do
-    assert length(meta[:deck]) == 52 
-  end
-
   test "52 cards in a deck" do
     assert ( length(Deck.create()) == 52 )
   end
@@ -31,7 +27,6 @@ defmodule DeckTest do
     assert( length(deck) == 47 )
     assert( length(hand) == 5 )
   end
-
 
   test "Describe a card in English" do
     c_1 = Card.new rank: 'Jack', suit: 'Clubs',  points: 10

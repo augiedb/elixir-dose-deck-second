@@ -75,13 +75,4 @@ defmodule GameTest do
     assert( Deck.is_a_match(hand, c_suit) == Card.new )
   end
 
-#  test "Take a turn with one card" do
-#    draw = Deck.create()
-#    discard = Deck.deal_hand(draw, 1)
-#    {hand, draw} = Deck.deal_hand(draw, 5)
-#    draw = Deck.deal_hand(draw, 1)
-#    {new_hand, new_draw} = Deck.pick_up_card(draw, hand)
-#    Game.take_turn(new_hand, discard, new_draw)
-#  end
-
 end
