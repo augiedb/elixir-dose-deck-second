@@ -4,7 +4,7 @@ defmodule Game do
   #
   # DISCARD stack always puts cards at the beginning of the list
 
-  # This is where you start the game
+#--------- This is where you start the game
   def play_a_game do
     deck = Deck.create() |> Deck.shuffle
     {hand, deck} = Deck.deal_hand(deck, 5)
@@ -13,38 +13,6 @@ defmodule Game do
     IO.puts "You #{results}"
   end
 
-  def see_top_discard_card(discards) do
-    [top_card | _rest] = discards
-    top_card 
-  end
-
-  def play_card(card, hand, discard) do
-    hand = List.flatten hand
-    Game.show_hand(hand)
-    hand_new = hand -- [card]
-    discard_new = [card] ++ [discard] 
-    {discard_new, hand_new}
-  end
-
-###
-  def show_hand(list) do
-    show_hand(list, 1, "")
-  end
-  
-  defp show_hand([], _, long_string) do
-    long_string
-  end
-
-  defp show_hand([head|tail], acc, long_string) do
-    longer_string = long_string <> "#{acc}: " <> head.describe <> "\n"
-    show_hand(tail, acc + 1, longer_string)
-  end
-####
-
-  def hand_value(hand) do
-    points_list = Enum.map(hand, fn(x) -> x.points end)
-    Enum.reduce(points_list, 0, fn(x, acc) -> x + acc end)
-  end
 
 #--------- TAKE_TURNS
 
@@ -110,6 +78,42 @@ defmodule Game do
       take_turn(new_hand, new_discard, draw)   
     end
 
+  end
+
+
+#----------- Not sure where these functions belong
+
+  def see_top_discard_card(discards) do
+    [top_card | _rest] = discards
+    top_card 
+  end
+
+  def play_card(card, hand, discard) do
+    hand = List.flatten hand
+    Game.show_hand(hand)
+    hand_new = hand -- [card]
+    discard_new = [card] ++ [discard] 
+    {discard_new, hand_new}
+  end
+
+###
+  def show_hand(list) do
+    show_hand(list, 1, "")
+  end
+  
+  defp show_hand([], _, long_string) do
+    long_string
+  end
+
+  defp show_hand([head|tail], acc, long_string) do
+    longer_string = long_string <> "#{acc}: " <> head.describe <> "\n"
+    show_hand(tail, acc + 1, longer_string)
+  end
+####
+
+  def hand_value(hand) do
+    points_list = Enum.map(hand, fn(x) -> x.points end)
+    Enum.reduce(points_list, 0, fn(x, acc) -> x + acc end)
   end
 
 end
