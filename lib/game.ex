@@ -6,7 +6,7 @@ defmodule Game do
 
 #--------- This is where you start the game
   def play_a_game do
-    deck = Deck.create() |> Deck.shuffle
+    deck = Deck.create() |> Deck.shuffle |> Deck.shuffle
     {hand, deck} = Deck.deal_hand(deck, 5)
     {discard, deck} = Deck.deal_card(deck)
     results = take_turn(hand, [discard], deck)
@@ -53,12 +53,12 @@ defmodule Game do
     # Play a card in user's hand that matches the discard
     # If a rank or value matches or you have a Crazy Eight, play the card
     card_to_match = Game.see_top_discard_card(discard)
-    IO.puts "CARD TO MATCH: " <> card_to_match.describe
+    IO.puts "TOP OF DISCARD PILE: " <> card_to_match.describe
     # Have to wrap discard up in brackets to treat it as a list.  MAGIC!
     IO.puts "NUMBER OF CARDS IN THE DISCARD PILE: #{length([discard])}"
     IO.puts "NUMBER OF CARDS IN THE DRAW    PILE: #{length(draw)}"
-    IO.puts "You have #{length(hand)} cards in your hand."
-    #Game.show_hand(hand)
+    IO.puts "You have #{length(hand)} cards in your hand. They are:"
+    Game.show_hand(hand)
 
     card_to_play = Deck.is_a_match(hand, card_to_match)
 
@@ -70,14 +70,14 @@ defmodule Game do
       IO.puts "Took 1 from draw, added 1 to hand"
       take_turn(hand ++ [card], discard, new_draw)
     else
-      IO.puts card_to_match.describe
-      IO.puts "Matches"
-      IO.puts card_to_play.describe
+      IO.puts card_to_match.describe <> " matches " <> card_to_play.describe
+      IO.puts "Place " <> card_to_play.describe <> " onto discards and attempt to match IT next."
       {new_discard, new_hand} = play_card(card_to_play, hand, discard)
 
       take_turn(new_hand, new_discard, draw)   
+      IO.puts "----"
     end
-
+    " ARE ENDING IN THE WRONG SPOT. Jerk."
   end
 
 
@@ -89,7 +89,7 @@ defmodule Game do
   end
 
   def play_card(card, hand, discard) do
-    Game.show_hand(hand)
+    #Game.show_hand(hand)
     hand_new = hand -- [card]
     discard_new = [card] ++ [discard] 
     {discard_new, hand_new}
@@ -101,7 +101,7 @@ defmodule Game do
   end
   
   defp show_hand([], _, long_string) do
-    long_string
+    IO.puts long_string
   end
 
   defp show_hand([head|tail], acc, long_string) do

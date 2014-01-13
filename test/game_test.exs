@@ -30,13 +30,13 @@ defmodule GameTest do
     assert( Game.hand_value(hand) == 15 )
   end
 
-  test "Show hand of cards" do
-    c_1 = Card.new rank: 'Jack', suit: 'Clubs', points: 10
-    c_2 = Card.new rank: 5,      suit: 'Hearts', points: 5
-    hand = [c_1, c_2]
-
-    assert( Game.show_hand(hand) == "1: Jack of Clubs (10)\n2: 5 of Hearts (5)\n")
-  end
+#  test "Show hand of cards" do
+#    c_1 = Card.new rank: 'Jack', suit: 'Clubs', points: 10
+#    c_2 = Card.new rank: 5,      suit: 'Hearts', points: 5
+#    hand = [c_1, c_2]
+#
+#    assert( Game.show_hand(hand) == "1: Jack of Clubs (10)\n2: 5 of Hearts (5)\n")
+#  end
 
   # This is one ridiculously long test, checking way too much stuff along the way.
   # Like most such testing, it's done to help ME feel comfortable with my own code

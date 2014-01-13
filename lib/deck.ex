@@ -28,15 +28,12 @@ defmodule Deck do
     Enum.split(deck, number_of_cards_in_a_hand)
   end
 
-  def deal_card(deck) do
-    [single_card|rest_of_deck] = deck
-    {single_card, rest_of_deck}
+  def deal_card([top_card | rest_of_deck]) do
+    {top_card, rest_of_deck}
   end
 
-  def pick_up_card(draw, hand) do
-    [new_card | new_draw ] = draw
-    #{new_card, new_draw} = deal_hand(draw, 1)
-    {hand ++ [new_card], new_draw}
+  def pick_up_card([card | new_draw ], hand) do
+    {hand ++ [card], new_draw}
   end
   
   def is_a_match(hand, card_to_match) do
