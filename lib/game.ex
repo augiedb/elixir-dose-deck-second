@@ -10,7 +10,7 @@ defmodule Game do
     {hand, deck} = Deck.deal_hand(deck, 5)
     {discard, deck} = Deck.deal_card(deck)
     results = take_turn(hand, [discard], deck)
-    IO.puts "You #{results}"
+    IO.puts "You ended up with #{results}"
   end
 
 
@@ -19,7 +19,7 @@ defmodule Game do
   def take_turn([], _discard, []) do
     # User played last remaining cards against discards stack
     # when draw stack was already empty.
-    "Win"
+    0
   end
 
   def take_turn(hand, discard, []) do
@@ -53,7 +53,7 @@ defmodule Game do
 
   def take_turn([], _discard, _draw) do
     # Still cards left on draw stack, but user's hand is empty
-    "Win" 
+    0 
   end
 
   def take_turn(hand, discard, draw) do
