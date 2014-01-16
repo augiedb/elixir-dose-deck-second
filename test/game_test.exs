@@ -3,12 +3,13 @@ defmodule GameTest do
 
   test "Game Over/Win if hand is empty" do
     d = Deck.create()
-    assert( Game.take_turn([], d, d) == "Win")
+    assert( Game.take_turn([], d, d) == 0)
   end
 
   test "Game Over/Lose if draw is empty before the player's hand" do
-    d = Deck.create()
-    assert( Game.take_turn(d, d, []) == "Lose")
+    {hand, draw} = Deck.deal_hand( Deck.create(), 5 ) 
+    {discard, deck} = Deck.deal_card(draw)
+    assert( Game.take_turn(hand, [discard], []) > 0)
   end
 
   test "Show correct top card on discard stack" do

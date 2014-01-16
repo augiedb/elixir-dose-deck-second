@@ -11,11 +11,11 @@ defmodule Game do
     {discard, deck} = Deck.deal_card(deck)
     results = take_turn(hand, [discard], deck)
     IO.puts "You ended up with #{results}"
+    results
   end
 
 
 #--------- TAKE_TURNS
-
   def take_turn([], _discard, []) do
     # User played last remaining cards against discards stack
     # when draw stack was already empty.
@@ -39,15 +39,13 @@ defmodule Game do
     if card_to_play.suit != nil do  # MATCH
       IO.puts card_to_match.describe <> " MATCHES " <>  card_to_play.describe
       {new_discard, new_hand } = play_card(card_to_play, hand, discard)
-      Game.show_hand(new_hand)
       take_turn(new_hand, new_discard, [])
     else
       total_points = hand_value(hand)
     end
   end
 
-
-  def take_turn([], _discard, _draw) do
+  def take_turn([], discard, _draw) do
     # Still cards left on draw stack, but user's hand is empty
     0 
   end
@@ -59,7 +57,7 @@ defmodule Game do
     IO.puts "TOP OF DISCARD PILE: " <> card_to_match.describe
 
     # Have to wrap discard up in brackets to treat it as a list.  MAGIC!
-    IO.puts "NUMBER OF CARDS IN THE DISCARD PILE: #{length([discard])}"
+    IO.puts "NUMBER OF CARDS IN THE DISCARD PILE: #{length(discard)}"
     IO.puts "NUMBER OF CARDS IN THE DRAW    PILE: #{length(draw)}"
     IO.puts "You have #{length(hand)} cards in your hand. They are:"
     Game.show_hand(hand)
