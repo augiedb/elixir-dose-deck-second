@@ -36,17 +36,24 @@ defmodule Game do
     card_to_play = Deck.is_a_match(hand, card_to_match)
     IO.puts "You are trying to match the " <> card_to_match.describe <> " with your hand:"
     Game.show_hand(hand)
-    if card_to_play.suit != nil do  # MATCH
-      IO.puts card_to_match.describe <> " MATCHES " <>  card_to_play.describe
-      {new_discard, new_hand } = play_card(card_to_play, hand, discard)
-      take_turn(new_hand, new_discard, [])
-    else
-      total_points = hand_value(hand)
+
+    case card_to_play do
+
+      { :no_card } ->    # GAME OVER
+        total_points = hand_value(hand)
+
+      _matching_card ->  
+        IO.puts card_to_match.describe <> " MATCHES " <>  card_to_play.describe
+        #play_matched_card(hand, discard, draw, card_to_play)
+        {new_discard, new_hand } = play_card(card_to_play, hand, discard)
+        take_turn(new_hand, new_discard, [])
     end
+
   end
 
-  def take_turn([], discard, _draw) do
+  def take_turn([], _discard, _draw) do
     # Still cards left on draw stack, but user's hand is empty
+    IO.puts "YOU WIN!"
     0 
   end
 
@@ -64,38 +71,37 @@ defmodule Game do
 
     card_to_play = Deck.is_a_match(hand, card_to_match)
 
-    if card_to_play.suit != nil do  # MATCH
-      IO.puts card_to_match.describe <> " matches " <> card_to_play.describe
-      IO.puts "Place " <> card_to_play.describe <> " onto discards and attempt to match IT next."
-      {new_discard, new_hand} = play_card(card_to_play, hand, discard)
-      take_turn(new_hand, new_discard, draw)   
-    else 
-      IO.puts "#-------------#"
-      IO.puts card_to_match.describe
-      IO.puts "Matches NOTHING"
-      {card, new_draw} = Deck.deal_card(draw)
-      IO.puts "Took 1 from draw, added 1 to hand"
-      take_turn(hand ++ [card], discard, new_draw)
+    case card_to_play do
+
+      { :no_card } ->
+        IO.puts "#-------------#"
+        IO.puts "NO MATCH"
+        {card, new_draw} = Deck.deal_card(draw)
+        IO.puts "Took 1 from draw, added 1 to hand"
+        take_turn(hand ++ [card], discard, new_draw)
+
+      _matching_card ->
+        IO.puts card_to_match.describe <> " matches " <> card_to_play.describe
+        IO.puts "Place " <> card_to_play.describe <> " onto discards and attempt to match IT next."
+        #play_matched_card(hand, discard, draw, card_to_play)
+        {new_discard, new_hand} = play_card(card_to_play, hand, discard)
+        take_turn(new_hand, new_discard, draw)   
     end
-
   end
-
 
 #----------- Not sure where these functions belong
 
-  def see_top_discard_card(discards) do
-    [top_card | _rest] = discards
+  def see_top_discard_card([top_card | _rest]) do
     top_card 
   end
 
   def play_card(card, hand, discard) do
-    #Game.show_hand(hand)
     hand_new = hand -- [card]
-    discard_new = [card] ++ [discard] 
+    discard_new = [card] ++ discard 
     {discard_new, hand_new}
   end
 
-###
+###--------
   def show_hand(list) do
     show_hand(list, 1, "")
   end
@@ -108,7 +114,7 @@ defmodule Game do
     longer_string = long_string <> "#{acc}: " <> head.describe <> "\n"
     show_hand(tail, acc + 1, longer_string)
   end
-####
+####-------
 
   def hand_value(hand) do
     points_list = Enum.map(hand, fn(x) -> x.points end)

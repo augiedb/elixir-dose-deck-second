@@ -14,4 +14,4 @@ There are no dependencies.  This code was created with Erlang 16B02 and Elixir 0
 
 * Turn this into an OTP type thing.  Run 1000 games at once. FOR FUN!  And, er, test the logic behind choosing cards to see if minor tweaks give better results.
 
-I've been running it from inside `iex`.  Go with `Games.play_a_game` and let 'er rip.  It's ugly, but it works.
+I've been running it from inside `iex`.  Go with `Game.play_a_game` and let 'er rip.  It's ugly, but it works.

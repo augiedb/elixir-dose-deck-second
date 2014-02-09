@@ -4,7 +4,7 @@ defmodule Deck.Mixfile do
   def project do
     [ app: :deck,
       version: "0.0.1",
-      elixir: "~> 0.11.3-dev",
+      elixir: "~> 0.12.3-dev",
       deps: deps ]
   end
 

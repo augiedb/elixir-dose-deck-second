@@ -7,7 +7,6 @@ defmodule Deck do
     Deck.Supervisor.start_link
   end
 
-  # Create Deck  
   def create do
     lc rank inlist ['Ace',2,3,4,5,6,7,8,9,10,'Jack','Queen','King'], 
         suit inlist ['Hearts','Clubs','Diamonds','Spades'], 
@@ -38,7 +37,7 @@ defmodule Deck do
   
   def is_a_match(hand, card_to_match) do
     card_compare = fn(x) -> (card_to_match.suit == x.suit) or (card_to_match.rank === x.rank ) end
-    Enum.find(List.flatten(hand), Card.new, card_compare)
+    Enum.find(List.flatten(hand), { :no_card }, card_compare)
   end
 
 end
