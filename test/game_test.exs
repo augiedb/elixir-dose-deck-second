@@ -73,7 +73,7 @@ defmodule GameTest do
     c_suit = Card.new rank: 'Ace', suit: 'Clubs'
     assert( Deck.is_a_match(hand, c_suit) == c_1 )
     c_suit = Card.new rank: 'Ace', suit: 'Diamonds'
-    assert( Deck.is_a_match(hand, c_suit) == Card.new )
+    assert( Deck.is_a_match(hand, c_suit) == { :no_card } )
   end
 
 end

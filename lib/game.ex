@@ -9,7 +9,7 @@ defmodule Game do
     deck = Deck.create() |> Deck.shuffle |> Deck.shuffle
     {hand, deck} = Deck.deal_hand(deck, 5)
     {discard, deck} = Deck.deal_card(deck)
-    results = take_turn(hand, [discard], deck)
+    results = take_turn(hand, discard, deck)
     IO.puts "You ended up with #{results}"
     results
   end
@@ -32,7 +32,7 @@ defmodule Game do
     # If it doesn't match, no harm. Just skip over this and end the game.
     IO.puts "Draw pile is now empty.  This is the end game portion."
 
-    card_to_match = Game.see_top_discard_card(discard)
+    card_to_match = discard
     card_to_play = Deck.is_a_match(hand, card_to_match)
     IO.puts "You are trying to match the " <> card_to_match.describe <> " with your hand:"
     Game.show_hand(hand)
@@ -60,11 +60,10 @@ defmodule Game do
   def take_turn(hand, discard, draw) do
     # Play a card in user's hand that matches the discard
     # If a rank or value matches or you have a Crazy Eight, play the card
-    card_to_match = Game.see_top_discard_card(discard)
+    card_to_match = discard
     IO.puts "TOP OF DISCARD PILE: " <> card_to_match.describe
 
     # Have to wrap discard up in brackets to treat it as a list.  MAGIC!
-    IO.puts "NUMBER OF CARDS IN THE DISCARD PILE: #{length(discard)}"
     IO.puts "NUMBER OF CARDS IN THE DRAW    PILE: #{length(draw)}"
     IO.puts "You have #{length(hand)} cards in your hand. They are:"
     Game.show_hand(hand)
@@ -97,8 +96,7 @@ defmodule Game do
 
   def play_card(card, hand, discard) do
     hand_new = hand -- [card]
-    discard_new = [card] ++ discard 
-    {discard_new, hand_new}
+    {card, hand_new}   # New discard card, new hand
   end
 
 ###--------
