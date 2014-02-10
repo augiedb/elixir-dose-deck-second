@@ -9,7 +9,7 @@ defmodule GameTest do
   test "Game Over/Lose if draw is empty before the player's hand" do
     {hand, draw} = Deck.deal_hand( Deck.create(), 5 ) 
     {discard, deck} = Deck.deal_card(draw)
-    assert( Game.take_turn(hand, [discard], []) > 0)
+    assert( Game.take_turn(hand, discard, []) > 0)
   end
 
   test "Show correct top card on discard stack" do
@@ -19,7 +19,7 @@ defmodule GameTest do
     assert( top_card == discard ) # not empty set
 
     {new_card, _draw} = Deck.deal_card(deck)
-    new_discards = Game.see_top_discard_card([new_card] ++ [discard])
+    new_discards = new_card
     assert( new_discards == new_card )
   end
 
