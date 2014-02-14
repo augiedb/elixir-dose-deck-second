@@ -1,6 +1,6 @@
 defrecord Card, suit: nil, rank: nil, points: nil do
 
-  def describe(:no_card) do
+  def describe({ :no_card }) do
     "No card exists"
   end
 

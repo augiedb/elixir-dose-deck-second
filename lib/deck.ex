@@ -35,9 +35,25 @@ defmodule Deck do
     {hand ++ [card], new_draw}
   end
   
+
+  @doc """
+    Returns first card that matches the suit or rank of the card on top of the discard pile.
+    If none do, then it'll check for a Crazy Eight.
+  """
   def is_a_match(hand, card_to_match) do
-    card_compare = fn(x) -> (card_to_match.suit == x.suit) or (card_to_match.rank === x.rank ) end
-    Enum.find(List.flatten(hand), { :no_card }, card_compare)
+    IO.puts "Inside IS A MATCH"
+    card_compare = fn(x) -> (card_to_match.suit == x.suit) or (card_to_match.rank == x.rank ) end
+    option1 = Enum.find(List.flatten(hand), :no_card , card_compare)
+    option2 = has_a_crazy_eight(hand)
+    { option1, option2 }
   end
 
+  def has_a_crazy_eight(hand) do
+    :no_card 
+  end
+
+  #def has_a_crazy_eight(hand) do
+  #  Enum.find( List.flatten(hand), :no_card, f(x) -> x.rank == 8 end)
+  #end
+ 
 end

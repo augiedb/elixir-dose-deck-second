@@ -57,23 +57,11 @@ defmodule GameTest do
     card = Card.new rank: 'Jack', suit: 'Diamonds'
     hand = hand ++ [card] # Hacky, but want to test that a specific card can be played
     assert(length(hand) == 7)
-    {discard, hand} = Game.play_card(card, hand, discard)
-    assert(Enum.member?(discard, card) )
-    assert(length(discard) == 2)
+    {discard, hand} = Game.play_card(card, hand)
+    assert(discard == card)
     assert(Enum.member?(hand, card) == :false )
     assert(length(hand)    == 6)
   end
 
-  test "Find a correct match to a rank and suit" do
-    c_1 = Card.new rank: 'Jack', suit: 'Clubs'
-    c_2 = Card.new rank: 5,      suit: 'Hearts'
-    hand = [c_1, c_2]
-    c_rank = Card.new rank: 'Jack', suit: 'Diamonds'
-    assert( Deck.is_a_match(hand, c_rank) == c_1 )
-    c_suit = Card.new rank: 'Ace', suit: 'Clubs'
-    assert( Deck.is_a_match(hand, c_suit) == c_1 )
-    c_suit = Card.new rank: 'Ace', suit: 'Diamonds'
-    assert( Deck.is_a_match(hand, c_suit) == { :no_card } )
-  end
 
 end
